@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  node-backend:
+    build: ./MessyDigitsBackend
+    volumes:
+      - ./MessyDigitsBackend:/usr/src/app
+    ports:
+      - "3000:3000"
+    networks:
+      - app_network
+  mongodb-nosql:
+    build: ./MessyDigitsMongo
+    volumes:
+      - ./MessyDigitsMongo/db:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - app_network
+  angular-frontend:
+    build: ./MessyDigitsFrontend
+    volumes:
+      - ./MessyDigitsFrontend:/usr/src/app
+    ports:
+      - "4200:4200"
+    networks:
+      - app_network
+networks:
+  app_network:
+    driver: bridge

@@ -6,8 +6,8 @@ metadata:
 spec:
   stripPrefix:
     prefixes:
-      - "/"
-      - "/api"
+#      - "/" #not needed, it just removes root
+#      - "/api" #backend paths all start with /api anyways, so no need to remove this as well
       - "/mongo"
 
 ---

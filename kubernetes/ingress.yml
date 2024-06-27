@@ -1,0 +1,51 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: stalta-middleware
+  namespace: stalta-namespace
+spec:
+  stripPrefix:
+    prefixes:
+      - "/"
+      - "/api"
+      - "/mongo"
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: stalta-ingress
+  namespace: stalta-namespace
+  annotations:
+    traefik.ingress.kubernetes.io/router.middlewares: stalta-namespace-stalta-middleware@kubernetescrd
+    ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  rules:
+    - http:
+        paths:
+          - path: "/"
+            pathType: Prefix
+            backend:
+              service:
+                name: stalta-frontend-service
+                port:
+                  number: 80
+          - path: "/api"
+            pathType: Prefix
+            backend:
+              service:
+                name: stalta-backend-service
+                port:
+                  number: 80
+          - path: "/mongo"
+            pathType: Prefix
+            backend:
+              service:
+                name: stalta-mongo-service
+                port:
+                  number: 80
+
+
+
+
